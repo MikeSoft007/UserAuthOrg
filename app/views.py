@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from .models import db, User, Organization, UserOrganization
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
+import logging
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 org_bp = Blueprint('org', __name__, url_prefix='/api/organisations')
@@ -155,27 +156,36 @@ def get_organization(orgId):
 @jwt_required()
 def create_organization():
     data = request.get_json()
-    if not data or 'name' not in data:
-        return jsonify({"errors": [{"field": "name", "message": "name is required"}]}), 422
+    name = data.get('name')
+    description = data.get('description')
 
-    current_user_id = get_jwt_identity()
-    new_org = Organization(name=data['name'], description=data.get('description'))
-    db.session.add(new_org)
-    db.session.commit()
+    if not name:
+        return jsonify({"status": "Bad Request", "message": "Name is required"}), 400
+
+    try:
+        org = Organization(
+            name=name,
+            description=description
+        )
+        db.session.add(org)
+        db.session.commit()
+        return jsonify({
+            "status": "success",
+            "message": "Organisation created successfully",
+            "data": {
+                "orgId": org.id,
+                "name": org.name,
+                "description": org.description
+            }
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Error creating organization: {str(e)}")
+        return jsonify({
+            "status": "error",
+            "message": "An error occurred while creating the organization"
+        }), 500
     
-    user_org = UserOrganization(user_id=current_user_id, organization_id=new_org.id)
-    db.session.add(user_org)
-    db.session.commit()
-
-    return jsonify({
-        "status": "success",
-        "message": "Organisation created successfully",
-        "data": {
-            "orgId": new_org.id,
-            "name": new_org.name,
-            "description": new_org.description
-        }
-    }), 201
 
 # Add user to organization
 @org_bp.route('/<orgId>/users', methods=['POST'])
