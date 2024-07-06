@@ -11,7 +11,6 @@ Flask-Bcrypt==1.0.1
 Flask-Cors==4.0.1
 Flask-JWT-Extended==4.6.0
 Flask-Migrate==4.0.7
-Flask-PyMongo==2.3.0
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.1.1
 greenlet==3.0.3
@@ -27,7 +26,6 @@ packaging==24.1
 pillow==10.4.0
 psycopg2-binary==2.9.9
 PyJWT==2.8.0
-pymongo==4.8.0
 python-dotenv==1.0.1
 pytz==2024.1
 requests==2.32.3
