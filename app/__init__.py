@@ -14,10 +14,11 @@ def create_app(config_name):
     jwt.init_app(app)
 
     # Register Blueprints
-    from .views import auth_bp, user_bp, org_bp
+    from .views import auth_bp, user_bp, org_bp, user_home_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(org_bp)
+    app.register_blueprint(user_home_bp)
 
 
     return app

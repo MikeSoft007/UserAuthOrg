@@ -6,6 +6,14 @@ from sqlalchemy.exc import IntegrityError
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 org_bp = Blueprint('org', __name__, url_prefix='/api/organisations')
 user_bp = Blueprint('user', __name__, url_prefix='/api/users')
+user_home_bp = Blueprint('home', __name__, url_prefix='')
+
+
+#Check Connection
+@user_home_bp.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "Connection OK"})
+
 
 # Registration route
 @auth_bp.route('/register', methods=['POST'])
@@ -87,7 +95,7 @@ def login():
         return jsonify({"status": "Bad request", "message": "Authentication failed", "statusCode": 401}), 401
 
 # Get user info
-#@user_bp.route('/<id>', methods=['GET'])
+@user_bp.route('/<id>', methods=['GET'])
 @jwt_required()
 def get_user(id):
     current_user_id = get_jwt_identity()
