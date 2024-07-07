@@ -134,8 +134,12 @@ class EndToEndTestCase(unittest.TestCase):
     def test_user_registration(self):
         response = self.register_user('michael', 'ekpenyong', 'mekpenyong2@gmail.com', 'securepassword', '123-456-7890')
         data = json.loads(response.data)
+
+        message = 'Registration successful'
+        
         self.assertEqual(response.status_code, 201)
         self.assertEqual(data['status'], 'success')
+        self.assertEqual(data['message'], message)
         self.assertIn('accessToken', data['data'])
         self.assertIn('user', data['data'])
         self.assertEqual(data['data']['user']['firstName'], 'michael')
@@ -145,7 +149,11 @@ class EndToEndTestCase(unittest.TestCase):
         self.register_user('michael', 'ekpenyong', 'mekpenyong2@gmail.com', 'securepassword', '123-456-7890')
         response = self.login_user('mekpenyong2@gmail.com', 'securepassword')
         data = json.loads(response.data)
+
+        message = 'Login successful'
+
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['message'], message)
         self.assertEqual(data['status'], 'success')
         self.assertIn('accessToken', data['data'])
         self.assertIn('user', data['data'])
