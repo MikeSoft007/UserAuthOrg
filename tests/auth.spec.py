@@ -163,7 +163,6 @@ class EndToEndTestCase(unittest.TestCase):
 
         # Verify the error message
         data = json.loads(response2.data)
-        print("DATA", data)
         self.assertIn('Email already exists', data['errors'][0]['message'])
 
 

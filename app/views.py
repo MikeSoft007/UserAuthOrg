@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from .models import db, User, Organization, UserOrganization
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
-import logging
+import logging, re
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 org_bp = Blueprint('org', __name__, url_prefix='/api/organisations')
@@ -16,8 +16,7 @@ user_home_bp = Blueprint('home', __name__, url_prefix='')
 def home():
     return jsonify({"message": "Connection OK"})
 
-
-# Registration route
+#Register route
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -30,6 +29,11 @@ def register():
         return jsonify({"errors": [{"field": field, "message": f"{field} is required"} for field in missing_fields]}), 422
     
     try:
+        # Validate email format
+        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not re.match(email_regex, data['email']):
+            return jsonify({'status': 'fail', 'message': 'Invalid email format'}), 400
+
         new_user = User(
             first_name=data['firstName'],
             last_name=data['lastName'],
@@ -37,6 +41,7 @@ def register():
             password=data['password'],
             phone=data.get('phone')
         )
+
         db.session.add(new_user)
         db.session.commit()
         
@@ -49,7 +54,9 @@ def register():
         db.session.add(user_org)
         db.session.commit()
         
+        # Generate access token
         access_token = create_access_token(identity=new_user.id)
+        
         return jsonify({
             "status": "success",
             "message": "Registration successful",
