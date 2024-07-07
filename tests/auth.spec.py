@@ -11,9 +11,9 @@ from app.models import User, Organization
 from flask import json
 
 
-class UniteTestCase(unittest.TestCase):
-    '''Unit Test. 
-    The tests covers token generation, experation and organization access.'''
+class UnitTestCase(unittest.TestCase):
+    '''Unit Test.
+    The tests cover token generation, expiration, and organization access.'''
     def setUp(self):
         self.app = create_app('testing')
         self.client = self.app.test_client
@@ -100,10 +100,9 @@ class UniteTestCase(unittest.TestCase):
         self.assertNotEqual(org_name, "Other's Organization")
 
 
-
 class EndToEndTestCase(unittest.TestCase):
-    '''End-to-end tests. 
-    The tests covers successful user registration, validation errors, and database constraints.'''
+    '''End-to-end tests.
+    The tests cover successful user registration, validation errors, and database constraints.'''
     def setUp(self):
         self.app = create_app('testing')
         self.client = self.app.test_client
@@ -136,7 +135,7 @@ class EndToEndTestCase(unittest.TestCase):
         data = json.loads(response.data)
 
         message = 'Registration successful'
-        
+
         self.assertEqual(response.status_code, 201)
         self.assertEqual(data['status'], 'success')
         self.assertEqual(data['message'], message)
@@ -158,7 +157,6 @@ class EndToEndTestCase(unittest.TestCase):
         self.assertIn('accessToken', data['data'])
         self.assertIn('user', data['data'])
 
-
     def test_duplicate_email_registration(self):
         # Register the first user
         response1 = self.register_user('mark', 'essien', 'mark.essien@example.com', 'password', '111-222-3333')
@@ -174,6 +172,5 @@ class EndToEndTestCase(unittest.TestCase):
         self.assertIn('Email already exists', data['errors'][0]['message'])
 
 
-
 if __name__ == '__main__':
-    unittest.main()
+    unittest.TextTestRunner(verbosity=2).run(unittest.TestLoader().loadTestsFromModule(sys.modules[__name__]))
