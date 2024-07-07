@@ -62,8 +62,8 @@ This is a Python API using Flask Framework that Connects the application to a Po
 - 3.11.9
 
 ### Render is used to host the postgres DB and Vercel for deployment:
-- [Render](https://dashboard.render.com/): Provides weather status based on location.
 - [Vercel](https://vercel.com/): used for application deployment and hosting.
+- [Render](https://dashboard.render.com/): Host for PostgresQL Database.
 
 # Test files
 ### UnitTest and E2E test located in:
