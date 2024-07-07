@@ -6,7 +6,7 @@ import uuid
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -28,7 +28,7 @@ class User(db.Model):
 class Organization(db.Model):
     __tablename__ = 'organizations'
 
-    id = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(255), nullable=True)
     users = db.relationship('User', secondary='user_organizations')
