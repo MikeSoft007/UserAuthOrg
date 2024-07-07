@@ -1,7 +1,52 @@
 # User Management and Organization API using Flask
 
 This is a Python API using Flask Framework that Connects the application to a Postgres database server. ORM like SQLAlchemy was used
-here are the endpoints
+
+### Base Endponit
+[GET][text](https://user-auth-org.vercel.app)
+
+### Register Endpoint
+#[POST] /auth/register Registers a users and creates a default organisation Register request body:
+
+```json
+{
+  "firstName": "Chinomso",
+  "lastName": "Cynthia",
+  "email": "chi@gmail.com",
+  "password": "securepassword",
+  "phone": "123-3333-8888"
+}
+```
+
+### Login Endpoint
+- https://user-auth-org.vercel.app/auth/login
+
+```json
+{
+  "email": "elora@gmail.com",
+  "password": "securepassword"
+}
+```
+
+### Create Organization Endpoint
+- https://user-auth-org.vercel.app/api/organisations
+
+```json
+{
+  "name": "hng",
+  "description": "This is an organization for hng Developers"
+}
+```
+
+### Add user to organization Endpoint
+- https://user-auth-org.vercel.app/api/organisations/<:orgid>/
+
+```json
+{
+  "userId": "<userId>"
+}
+```
+
 ### Register Endpoint
 - https://user-auth-org.vercel.app/auth/register
 
@@ -13,7 +58,20 @@ here are the endpoints
   "password": "securepassword",
   "phone": "123-3333-8888"
 }
+```
 
+### Register Endpoint
+- https://user-auth-org.vercel.app/auth/register
+
+```json
+{
+  "firstName": "Chinomso",
+  "lastName": "Cynthia",
+  "email": "chi@gmail.com",
+  "password": "securepassword",
+  "phone": "123-3333-8888"
+}
+```
 
 ### Framework:
 - Flask
