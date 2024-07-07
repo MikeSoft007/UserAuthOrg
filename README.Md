@@ -3,73 +3,55 @@
 This is a Python API using Flask Framework that Connects the application to a Postgres database server. ORM like SQLAlchemy was used
 
 ### Base Endponit
-[GET][text](https://user-auth-org.vercel.app)
+- (https://user-auth-org.vercel.app)
 
 ### Register Endpoint
 #[POST] /auth/register Registers a users and creates a default organisation Register request body:
 
 ```json
 {
-  "firstName": "Chinomso",
-  "lastName": "Cynthia",
-  "email": "chi@gmail.com",
-  "password": "securepassword",
-  "phone": "123-3333-8888"
+	"firstName": "string",
+	"lastName": "string",
+	"email": "string",
+	"password": "string",
+	"phone": "string",
 }
 ```
 
 ### Login Endpoint
-- https://user-auth-org.vercel.app/auth/login
+- [POST] /auth/login : logs in a user. When you log in, you can select an organisation to interact with 
 
 ```json
 {
-  "email": "elora@gmail.com",
-  "password": "securepassword"
+	"email": "string",
+	"password": "string",
 }
 ```
 
-### Create Organization Endpoint
-- https://user-auth-org.vercel.app/api/organisations
+### Get a user Organization(s) Endpoint
+- [GET] /api/organisations: a user gets their own record or user record in organisations they belong to or created [PROTECTED]
+
+
+### Get a single organization Endpoint
+- [GET] /api/organisations/:orgId the logged in user gets a single organisation record [PROTECTED]
+
+
+### Create organization Endpoint
+- [POST] /api/organisations : a user can create their new organisation [PROTECTED]
 
 ```json
 {
-  "name": "hng",
-  "description": "This is an organization for hng Developers"
+	"name": "string", // Required and cannot be null
+	"description": "string",
 }
 ```
 
-### Add user to organization Endpoint
-- https://user-auth-org.vercel.app/api/organisations/<:orgid>/
+### Add a user to a particluar organization Endpoint
+- [POST] /api/organisations/:orgId/users : adds a user to a particular organisation
 
 ```json
 {
-  "userId": "<userId>"
-}
-```
-
-### Register Endpoint
-- https://user-auth-org.vercel.app/auth/register
-
-```json
-{
-  "firstName": "Chinomso",
-  "lastName": "Cynthia",
-  "email": "chi@gmail.com",
-  "password": "securepassword",
-  "phone": "123-3333-8888"
-}
-```
-
-### Register Endpoint
-- https://user-auth-org.vercel.app/auth/register
-
-```json
-{
-  "firstName": "Chinomso",
-  "lastName": "Cynthia",
-  "email": "chi@gmail.com",
-  "password": "securepassword",
-  "phone": "123-3333-8888"
+	"userId": "string"
 }
 ```
 
