@@ -65,10 +65,7 @@ This is a Python API using Flask Framework that Connects the application to a Po
 - [Render](https://dashboard.render.com/): Provides weather status based on location.
 - [Vercel](https://vercel.com/): used for application deployment and hosting.
 
+# Test files
+### UnitTest and E2E test located in:
+- tests/auth.spec.py
 
-
-Description:
-
-This API will serve fetch requests with the help of Flask and we will receive weather data at OpenWeatherMap, based on the city which is derived from given IP address by usign IPinfo. io. It then sends back a JSON object with their IP, city location and an introduced statement followd by the temp in that part of ith world
-
-You can use this API for getting weather detail according to your location.
