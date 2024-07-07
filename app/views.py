@@ -14,7 +14,7 @@ user_home_bp = Blueprint('home', __name__, url_prefix='')
 #Check Connection
 @user_home_bp.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "Connection OK"})
+    return jsonify({"message": "Hi there!, API connection OK"})
 
 #Register route
 @auth_bp.route('/register', methods=['POST'])
@@ -87,7 +87,7 @@ def register():
         db.session.rollback()
         return jsonify({"errors": [{"field": "email", "message": "Email already exists"}]}), 422
     
-    
+
 # Login route
 @auth_bp.route('/login', methods=['POST'])
 def login():
