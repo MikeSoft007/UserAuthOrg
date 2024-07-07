@@ -22,18 +22,29 @@ def register():
     data = request.get_json()
     if not data:
         return jsonify({"status": "Bad request", "message": "Registration unsuccessful", "statusCode": 400}), 400
-    
+
     required_fields = ["firstName", "lastName", "email", "password"]
     missing_fields = [field for field in required_fields if field not in data]
     if missing_fields:
         return jsonify({"errors": [{"field": field, "message": f"{field} is required"} for field in missing_fields]}), 422
-    
-    try:
-        # Validate email format
-        email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        if not re.match(email_regex, data['email']):
-            return jsonify({'status': 'fail', 'message': 'Invalid email format'}), 400
 
+    # Validate for empty data or spaces
+    empty_fields = [field for field in required_fields if not data[field].strip()]
+    if empty_fields:
+        return jsonify({"errors": [{"field": field, "message": f"{field} cannot be empty or just spaces"} for field in empty_fields]}), 422
+
+    # Validate firstName and lastName to contain only alphabetic characters
+    if not data['firstName'].isalpha():
+        return jsonify({"errors": [{"field": "firstName", "message": "firstName must contain only alphabetic characters"}]}), 422
+    if not data['lastName'].isalpha():
+        return jsonify({"errors": [{"field": "lastName", "message": "lastName must contain only alphabetic characters"}]}), 422
+
+    # Validate email format
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    if not re.match(email_regex, data['email']):
+        return jsonify({'status': 'fail', 'message': 'Invalid email format'}), 400
+
+    try:
         new_user = User(
             first_name=data['firstName'],
             last_name=data['lastName'],
@@ -44,19 +55,19 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
-        
+
         org_name = f"{new_user.first_name}'s Organisation"
         new_org = Organization(name=org_name)
         db.session.add(new_org)
         db.session.commit()
-        
+
         user_org = UserOrganization(user_id=new_user.id, organization_id=new_org.id)
         db.session.add(user_org)
         db.session.commit()
-        
+
         # Generate access token
         access_token = create_access_token(identity=new_user.id)
-        
+
         return jsonify({
             "status": "success",
             "message": "Registration successful",
@@ -75,7 +86,8 @@ def register():
     except IntegrityError:
         db.session.rollback()
         return jsonify({"errors": [{"field": "email", "message": "Email already exists"}]}), 422
-
+    
+    
 # Login route
 @auth_bp.route('/login', methods=['POST'])
 def login():
